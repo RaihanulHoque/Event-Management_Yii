@@ -1,0 +1,40 @@
+/*.register-container {
+    margin: 0 auto;
+    width: 538px;
+}
+
+.user-info{color:#666; font-weight: 600; padding-top:5px;} 
+.form-horizontal .control-label{padding-right:7px;}
+.form-horizontal .control-group{ margin-bottom:10px;}
+.help-block{background: none repeat scroll 0 0 bisque;
+    border: 1px solid !important;
+    margin-bottom: 10px !important;
+    text-align: center;
+    width: 50%;
+	padding: 3px 0;}
+.grid-view .table .button-column{width:80px !important;}
+.widget-head h1{padding:5px 0; font-size:32px;}*/
+.tab-content_appointment{overflow: none !important; width:90%; }
+.rowInput{margin-bottom:10px;}
+.external-event{cursor: pointer !important;}
+.serviceListLink, .serviceListLink:hover {text-decoration: none !important; }
+/*.external-event:hover {color: #6fb3e0 !important; font-size: 16px !important;  } */
+#external-events .label-success:hover{background-color: #6fb3e0 !important;}
+.linkServiceFontIco{float:right; padding: 7px 10px; font-size: 20px;}
+.marginBot10px{margin-bottom: 10px;}
+.marginTop10px{margin-top: 10px;}
+.errorSummary, .help-block, .errorMessage{color:#d15b47;}
+#user-form{width:40%;}
+.green{background: #00FF00 !important; font-weight: bold !important; color:#FFF !important; font-size: 15px;}
+.orangeBG{background: #FFA500 !important; font-weight: bold !important; color:#FFF !important; font-size: 15px;}
+.fLeft{float:left;}
+.fRight{float:right;}
+.lClear{clear: left;}
+.rClear{clear: right;}
+.bClear{clear: both;}
+.errorMessage{font-weight: bold; color: #d15b47;}
+.breadcrumb{width: 80% !important;}
+.customButton{margin : 10px 12px !important; padding: 6px 35px;}
+.textInputLarge{ width:450px !important;}
+.showHide{ font-weight:bold; color:red;padding:5px; border:1px solid red;margin:10px;}
+.hide{ display:none;}

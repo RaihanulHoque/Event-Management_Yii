@@ -1,0 +1,11 @@
+ public function actionCartDelete($id) {
+ // can not redirect/reload the div, now reloading the whole page
+TicketReservationParent::>>> 
+public function search_cart($event_id) {
+$criteria->condition = 't.event_id=' . $event_id . ' AND t.seassionid=' . $session .' AND t.status= 1';
+this is not working.... getting error to check the Current Session_id with existing Sessionid
+
+public static function getCartTotalPrice() {
+/// session condition is not working.. 
+
+ 
