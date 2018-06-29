@@ -156,26 +156,4 @@
 
 			</div>
 
-			<!-- CALLOUT -->
-			<section class="container">
 
-				<div class="row bs-callout nomargin-bottom">
-					<div class="col-md-8 text-center">
-						<h3 class="padding20">Subscribe <strong>now</strong> and get the <strong>latest</strong> offers.</h3>
-					</div>
-					<div class="col-md-4">
-
-						<p class="nomargin">Type your best E-mail Address</p>
-
-						<form method="get" action="#" class="input-group">
-							<input type="text" class="form-control" name="s" id="s" value="" placeholder="E-mail Address" />
-							<span class="input-group-btn">
-								<button class="btn btn-primary"><i class="fa fa-search"></i></button>
-							</span>
-						</form>
-
-					</div>
-				</div>
-
-			</section>
-			<!-- /CALLOUT -->

@@ -73,6 +73,14 @@
 								 <?php echo $form->error($model,'title')?>       
 							</div>
 						</div>
+ 
+						 <div class="form-group marginBot10px">
+							<?php echo $form->labelEx($model,'seat_amount', array('class' =>'col-sm-2 control-label no-padding-right')); ?>
+							<div class="col-sm-9">
+								 <?php echo $form->textField($model, 'seat_amount', array('placeholder'=>'Number of Seats of This Category','rows' => 2, 'span' => 5, 'maxlength' => 255)); ?>
+								 <?php echo $form->error($model,'seat_amount')?>       
+							</div>
+						</div>
 
 						 <div class="form-group marginBot10px">
 							<?php echo $form->labelEx($model,'price', array('class' =>'col-sm-2 control-label no-padding-right')); ?>

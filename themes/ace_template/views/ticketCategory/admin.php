@@ -1,7 +1,12 @@
 <?php
 /* @var $this TicketCategoryController */
 /* @var $model TicketCategory */
-
+/*
+$count = TicketCategory::model()->countByAttributes(array(
+	'event_id'=> 2,
+));
+print 'Total Category: '.$count; exit();
+*/
 $this->breadcrumbs=array(
 	'Ticket Categories'=>array('admin'),
 	'Manage',
@@ -64,11 +69,12 @@ $this->breadcrumbs=array(
 			'htmlOptions' => array('style' => "text-align:left; width:350px;"),
 		),
 		'title',
+		'seat_amount',
 		array(
 			'name' => 'category_color',
 			'type' => 'raw',
 			'value' => 'TicketCategoryColor::getData($data->category_color, "color_name")',
-			'filter' => CHtml::activeDropDownList($model, 'event_id', CHtml::listData(TicketCategoryColor::model()->findAll(array('condition' => '', "order" => "color_name")), 'id', 'color_name'), array('empty' => 'All', 'class' => 'select2')),
+			'filter' => CHtml::activeDropDownList($model, 'category_color', CHtml::listData(TicketCategoryColor::model()->findAll(array('condition' => '', "order" => "color_name")), 'id', 'color_name'), array('empty' => 'All', 'class' => 'select2')),
 			'htmlOptions' => array('style' => "text-align:left; width:150px;"),
 		),
 		'price',

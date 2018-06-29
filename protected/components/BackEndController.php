@@ -60,7 +60,9 @@ class BackEndController extends CController {
         $model->server_time = new CDbExpression('NOW()');
         $model->page_title = $this->pageTitle;
         $model->page_link = Yii::app()->request->url;
-        $model->browser = Yii::app()->browser->getBrowser();
+        //$model->browser = Yii::app()->browser->getBrowser();
+				$model->browser = "";
+
         $model->visitor_ip = $_SERVER['REMOTE_ADDR'];
         $model->save();
     }

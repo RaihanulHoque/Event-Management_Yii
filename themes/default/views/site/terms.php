@@ -1,26 +1,27 @@
+ <div id="shop">
+	<!-- PAGE TITLE -->
+	<header id="page-title">
+		<div class="container">
+			<h1>Terms &amp; Conditions</h1>
 
-<!-- PAGE TITLE -->
-<header id="page-title"> <!-- style="background-image:url('assets/images/demo/parallax_bg.jpg')" -->
-	<!--
-		Enable only if bright background image used
-		<span class="overlay"></span>
-	-->
+			<ul class="breadcrumb">
+				<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Home') . '</span>', array('/site/index')); ?>
+				> <li class="active">Terms &amp; Conditions</li>
+			</ul>
+		</div>
+	</header>
+	<section class="container">
 
-	<div class="container">
-		<h1>Terms & Conditions</h1>
-
-		<ul class="breadcrumb">
-			<li>
-			 <?php echo CHtml::link('<span class="btn-label"><i class="fa fa-home"></i></span>' . Yii::t('Common', 'Home'), array('site/index')); ?>
-			 </li>
-			<li class="active">Terms & Conditions</li>
-		</ul>
-	</div>
-</header>
- 
-
-<section class="container">
-
-
-</section><!-- form -->
-
+		<div class="row" style="margin: 0 auto; text-align:left;">
+			<!-- CONTACT -->
+			<div class="col-md-12">
+					  
+			<?php 
+			
+				echo $model->detail;
+				
+			?>
+			</div>
+		</div>
+	</section>
+</div>

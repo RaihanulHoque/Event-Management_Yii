@@ -51,9 +51,20 @@ class EventController extends BackEndController
 	 */
 	public function actionView($id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+		$model = $this->loadModel($id);
+		//Find Tickets Statistics
+        $model_ticketReservationCounter = new TicketReservationCounter('searchSummary');
+        $model_ticketReservationCounter->unsetAttributes();  // clear any default values
+        if (isset($_GET['TicketReservationCounter'])) {
+            $model_ticketReservationCounter->attributes = $_GET['TicketReservationCounter'];
+        }
+		
+		
+		 
+        $this->render('view', array(
+        	'model' => $model,
+            'model_ticketReservationCounter' => $model_ticketReservationCounter,
+        ));
 	}
 
 	/**
@@ -123,7 +134,8 @@ class EventController extends BackEndController
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
+		$prevStatus=$model->status;
+		
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -132,16 +144,53 @@ class EventController extends BackEndController
 			$model->attributes=$_POST['Event'];
 			$model->modified_on = new CDbExpression('NOW()');
 			$model->modified_by=Yii::app()->user->id;
+			
 
-			/*
-			if ($model->status==1){
+			if ($prevStatus !=1 && $model->status==1){
 				//Check whether this event has Ticket Category?
-			}
-			*/
+				$num_of_TicketCat=TicketCategory::getTicketAmount($model->id);
+				if ($num_of_TicketCat>0){
+					if ($model->save()) {
+						if ($model->status==1){
+							$rows = Yii::app()->db->createCommand()
+								->select('*')
+								->from('{{ticket_category}}')
+								->where('event_id=' . (int)$model->id)
+								->queryAll();
 
-			if($model->save()){
-				
-				$this->redirect(array('admin'));
+							foreach ($rows as $row) {
+								$catId = $row['id'];
+								$num_of_seats = $row['seat_amount'];
+								$reserved_seat_amount = 0; //This qty will change based on booking
+								
+								$ticketReservationCounter =new TicketReservationCounter;
+								$ticketReservationCounter->event_id= $model->id;
+								$ticketReservationCounter->ticket_category= $catId;
+								$ticketReservationCounter->total_seat_amount= $num_of_seats;
+								$ticketReservationCounter->reserved_seat_amount= $reserved_seat_amount;
+								$ticketReservationCounter->available_seat_amount= $num_of_seats - $reserved_seat_amount;
+								$ticketReservationCounter->checkpoint_time= new CDbExpression('NOW()');
+								
+								$ticketReservationCounter->save();
+								if (!$ticketReservationCounter->save()) {
+									print_r($ticketReservationCounter->getErrors());
+									exit();
+								}
+							}
+						}	
+						Yii::app()->user->setFlash('success', 'Saved successfully');	
+						$this->redirect(array('admin'));
+					}
+				}else{
+					$this->redirect(array('ticketCategory/create', array()));
+					Yii::app()->user->setFlash('error', 'Please assign ticket categories for this event first.');
+					$this->redirect(array('ticketCategory/create'));
+				}
+			}else{
+					if ($model->save()) {
+					Yii::app()->user->setFlash('success', 'Saved successfully');
+					$this->redirect(array('view', 'id' => $model->id));
+				}
 			}
 		}
 

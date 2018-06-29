@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $event_id
  * @property string $title
+ * @property string $seat_amount
  * @property string $category_color
  * @property integer $price
  * @property integer $created_by
@@ -33,13 +34,13 @@ class TicketCategory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('event_id, title, , price, created_by, created_on', 'required'),
-			array('event_id, price, created_by, updated_by', 'numerical', 'integerOnly'=>true),
+			array('event_id, price, created_by, updated_by, seat_amount', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>100),
 			array('category_color', 'length', 'max'=>6),
-			array('updated_on, category_color, updated_by', 'safe'),
+			array('updated_on, category_color,seat_amount, updated_by', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, event_id, title, category_color, price, created_by, created_on, updated_by, updated_on', 'safe', 'on'=>'search'),
+			array('id, event_id,seat_amount, title, category_color, price, created_by, created_on, updated_by, updated_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +64,7 @@ class TicketCategory extends CActiveRecord
 			'id' => 'ID',
 			'event_id' => 'Event',
 			'title' => 'Title',
+			'seat_amount' => 'Number of Seats',
 			'category_color' => 'Category Color',
 			'price' => 'Price',
 			'created_by' => 'Created By',
@@ -93,6 +95,7 @@ class TicketCategory extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('event_id',$this->event_id);
 		$criteria->compare('title',$this->title,true);
+		$criteria->compare('seat_amount',$this->seat_amount,true);
 		$criteria->compare('category_color',$this->category_color,true);
 		$criteria->compare('price',$this->price);
 		$criteria->compare('created_by',$this->created_by);
@@ -104,7 +107,8 @@ class TicketCategory extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-
+	
+	 
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -391,6 +395,12 @@ public static function getEventCategory($event_id) {
 		//echo '</select>';
     }
 
+    public static function getTicketAmount($event_id) {
+    	$ticket_cat_count = TicketCategory::model()->countByAttributes(array(
+			'event_id'=> $event_id,
+		));
+		return $ticket_cat_count;
+    }
 
 }
 ?>

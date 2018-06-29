@@ -90,7 +90,20 @@ class GenText extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
-
+	/**
+	* Manually Searching Based on "Text Category". Category Lists and their ID in the Left Side.
+	* 1	About Us
+	* 2	Privacy & policy
+	* 3	Terms & Condition
+	* 4	Sale Tickets with Use
+	* 5	Refund Policy
+	*/
+	
+	
+	
+	
+	
+	
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -100,5 +113,17 @@ class GenText extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	
+	function limitCharacter($x, $length){
+		if(strlen($x)<=$length)
+		{
+			echo $x;
+		  }
+		  else
+		  {
+			$y=substr($x,0,$length) . '...';
+			echo $y;
+		  }
 	}
 }

@@ -240,9 +240,7 @@ class EventController extends FrontEndController
 	public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('Event');
-		$this->render('site/index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$this->render('event_list');
 	}
 
 	/**

@@ -117,30 +117,30 @@ $this->breadcrumbs=array(
 						),
 						
 						array(
-                        'header' => '',
-                        'class' => 'CButtonColumn',
-                        'htmlOptions' => array('style' => "text-align:center;width:200px;", 'class' => ''),
-                        'template' => '{view} {update} {delete}',
-                        'buttons' => array(
+							'header' => '',
+							'class' => 'CButtonColumn',
+							'htmlOptions' => array('style' => "text-align:center;width:200px;", 'class' => ''),
+							'template' => '{view} {update} {delete}',
+							'buttons' => array(
 
-                        'view' => array(
-                          'label' => '',
-                          'imageUrl' => '',
-                          'url' => 'Yii::app()->createUrl("/event/view", array("id"=>$data["id"]))',
-                          'options' => array('class' => 'btn btn-xs btn-info fa fa-eye', 'style'=>'margin-bottom:2px;', 'title'=>'Detail Veiw'),
-                         ),
-                         'update' => array(
-                          'label' => '',
-                          'imageUrl' => '',
-                          'url' => 'Yii::app()->createUrl("/event/update", array("id"=>$data["id"]))',
-                          'options' => array('class' => 'btn btn-xs btn-info fa fa-pencil', 'style'=>' margin-bottom:2px;', 'title'=>'Update'),
-                         ),
-                         'delete' => array(
-                          'label' => '',
-                          'imageUrl' => '',
-                          'url' => 'Yii::app()->createUrl("/event/delete", array("id"=>$data["id"]))',
-                          'options' => array('class' => 'btn btn-xs btn-danger fa fa-trash-o' ,'style'=>' '),
-                         ),
+							'view' => array(
+							  'label' => '',
+							  'imageUrl' => '',
+							  'url' => 'Yii::app()->createUrl("/event/view", array("id"=>$data["id"]))',
+							  'options' => array('class' => 'btn btn-xs btn-info fa fa-eye', 'style'=>'margin-bottom:2px;', 'title'=>'Detail Veiw'),
+							 ),
+							 'update' => array(
+							  'label' => '',
+							  'imageUrl' => '',
+							  'url' => 'Yii::app()->createUrl("/event/update", array("id"=>$data["id"]))',
+							  'options' => array('class' => 'btn btn-xs btn-info fa fa-pencil', 'style'=>' margin-bottom:2px;', 'title'=>'Update'),
+							 ),
+							 'delete' => array(
+							  'label' => '',
+							  'imageUrl' => '',
+							  'url' => 'Yii::app()->createUrl("/event/delete", array("id"=>$data["id"]))',
+							  'options' => array('class' => 'btn btn-xs btn-danger fa fa-trash-o' ,'style'=>' '),
+							 ),
                         ),
 				
                 )

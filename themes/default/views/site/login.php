@@ -19,11 +19,6 @@
 
 						<!-- LOGIN -->
 						<div class="col-md-6">
-
-							<h2>Sign <strong>In</strong></h2>
-															<!-- alert failed -->
-							
-							
 							<div class="form" style="margin-bottom:20px;">
 							<?php $form=$this->beginWidget('CActiveForm', array(
 								'id'=>'login-form',

@@ -1,5 +1,6 @@
 <?php //echo Yii::app()->request->baseUrl; exit()
 //$user_id=Yii::app()->user->id;
+//echo $user_id; exit();
 //$session= session_id();
 ?>
 
@@ -85,49 +86,41 @@
 
 				<!-- SIGN IN -->
 				<div class="pull-right nav signin-dd">
-					<a id="quick_sign_in" href="page-signin.html" data-toggle="dropdown"><i class="fa fa-users"></i><span class="hidden-xs"> Sign In</span></a>
-					<div class="dropdown-menu" role="menu" aria-labelledby="quick_sign_in">
-						<?php /*
-						<h4>Sign In</h4>
-						
-						<form action="#" method="post" role="form">
-
-							<div class="form-group"><!-- email -->
-								<input required type="email" class="form-control" placeholder="Username or email">
-							</div>
-
-							<div class="input-group">
-
-								<!-- password -->
-								<input required type="password" class="form-control" placeholder="Password">
-								
-								<!-- submit button -->
-								<span class="input-group-btn">
-									<button class="btn btn-primary">Sign In</button>
-								</span>
-
-							</div>
-
-							<div class="checkbox"><!-- remmember -->
-								<label>
-									<input type="checkbox"> Remember me &bull; <a href="page-signin.html">Forgot password?</a>
-								</label>
-							</div>
-
-						</form>
-						<a href="#" class="btn-facebook fullwidth radius3"><i class="fa fa-facebook"></i> Connect With Facebook</a>
-						<a href="#" class="btn-twitter fullwidth radius3"><i class="fa fa-twitter"></i> Connect With Twitter</a>
-						<!--<a href="#" class="btn-google-plus fullwidth radius3"><i class="fa fa-google-plus"></i> Connect With Google</a>-->
-						*/ 
+					<a id="quick_sign_in" href="#" data-toggle="dropdown"><i class="fa fa-users"></i><span class="hidden-xs">
+						<?php if (!empty(Yii::app()->user->id)){ 
+								echo User::getData(Yii::app()->user->id, 'first_name')." ".User::getData(Yii::app()->user->id, 'middle_name');
+							}else{
+								echo "Sign In";
+							}
 						?>
-						<p class="bottom-create-account">
-							<?php echo CHtml::link(Yii::t('Common', 'Login'), array('site/login', ), array('class' => 'btn-labeled')); ?>
-						</p>
-						<hr />
+					</span></a>
+					<div class="dropdown-menu" role="menu" aria-labelledby="quick_sign_in">
+							<?php 
+								if (!empty(Yii::app()->user->id)){
+									echo '<p class="bottom-create-account">';
+									echo CHtml::link(Yii::t('Common', 'Profile'), array('site/profile', ), array('class' => 'btn-labeled'));
+									echo '</p>';
+									echo '<hr />';
+									echo '<p class="bottom-create-account">';
+									echo CHtml::link(Yii::t('Common', 'Change Password'), array('user/changepassword', ), array('class' => 'btn-labeled'));
+									echo '</p>';
+									echo '<hr />';
+									echo '<p class="bottom-create-account">';
+									echo CHtml::link(Yii::t('Common', 'Logout'), array('site/logout', ), array('class' => 'btn-labeled'));
+									echo '</p>';
+								}else{
+									echo '<p class="bottom-create-account">';
+									echo CHtml::link(Yii::t('Common', 'Login'), array('site/login', ), array('class' => 'btn-labeled'));
+									echo '</p>';
+									echo '<hr />';
+									echo '<p class="bottom-create-account">';
+									echo CHtml::link(Yii::t('Common', 'Create an Account'), array('user/create', ), array('class' => 'btn-labeled'));
+									echo '</p>';
+								}
+								
+
+							?>
 						
-						<p class="bottom-create-account">
-							<?php echo CHtml::link(Yii::t('Common', 'Create an Account'), array('user/create', ), array('class' => 'btn-labeled')); ?>
-						</p>
 					</div>
 				</div>
 				<!-- /SIGN IN -->
@@ -141,7 +134,8 @@
 					<?php echo '<i class="fa fa-angle-right"></i> '.CHtml::link(Yii::t('Common', 'About'), array('site/about', ), array('class' => 'btn-labeled')); ?>
 					<?php echo '<i class="fa fa-angle-right"></i> '.CHtml::link(Yii::t('Common', 'Privacy & Policy'), array('site/privacy', ), array('class' => 'btn-labeled')); ?>
 					<?php echo '<i class="fa fa-angle-right"></i> '.CHtml::link(Yii::t('Common', 'Terms & Condition'), array('site/terms', ), array('class' => 'btn-labeled')); ?>
-					<?php echo '<i class="fa fa-angle-right"></i> '.CHtml::link(Yii::t('Common', 'Create an Account'), array('site/contact', ), array('class' => 'btn-labeled')); ?>
+					<?php echo '<i class="fa fa-angle-right"></i> '.CHtml::link(Yii::t('Common', 'Sale Tickets with Us'), array('site/saleWithUs', ), array('class' => 'btn-labeled')); ?>
+					<?php echo '<i class="fa fa-angle-right"></i> '.CHtml::link(Yii::t('Common', 'Contact Us'), array('site/contact', ), array('class' => 'btn-labeled')); ?>
 				</div>
 				<!-- /LINKS -->
 
@@ -173,98 +167,71 @@
 							<li class="dropdown active">
 								<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Home') . '</span>', array('/site/index')); ?>
 							</li>
-							<li class="dropdown mega-menu-item mega-menu-two-columns">
+							<li class="dropdown">
 								<a class="dropdown-toggle" href="#">
-									Events <i class="fa fa-angle-down"></i>
+									Events<i class="fa fa-angle-down"></i>
 								</a>
 								<ul class="dropdown-menu">
 									<li>
-										<div class="mega-menu-content">
-											<div class="row">
-
-												<div class="col-md-4">
-													<ul class="sub-menu">
-														<li>
-															<ul class="sub-menu">
-
-																<li>
-																	<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Upcoming Events') . '</span>', array('/event/upcoming')); ?>
-																</li>
-																
-																<li class="dropdown-submenu">
-																	<?php echo CHtml::link('<i class="menu-icon fa fa-caret-right"> </i> <span class="menu-text" >' . Yii::t('Common', 'Events') . '</span>', array('site/contact')); ?>
-																</li>
- 															</ul>
-														</li>
-													</ul>
-												</div>
-
-												<div class="col-md-4">
-													<ul class="sub-menu">
-														<li>
-															<ul class="sub-menu">
-																<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Upcoming Events') . '</span>', array('/event/upcoming')); ?>
-															</ul>
-														</li>
-													</ul>
-												</div>
-												<div class="col-md-4">
-													<ul class="sub-menu">
-														<li>
-															<ul class="sub-menu">
-																<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Past Events') . '</span>', array('/event/past')); ?>
-															</ul>
-														</li>
-													</ul>
-												</div>		
-											</div>
-										</div>
+										<?php echo CHtml::link('<i class="menu-icon fa fa-refresh"> </i> <span class="menu-text" >' . Yii::t('Common', 'On Sale Events') . '</span>', array('/event/index', 'st'=>'1')); ?>
+									</li><li class="divider"></li>
+									<li>
+										<?php echo CHtml::link('<i class="menu-icon fa fa-calendar-plus-o"> </i> <span class="menu-text" >' . Yii::t('Common', 'Upcoming Events') . '</span>', array('/event/index', 'st'=>'2')); ?>
+									</li><li class="divider"></li>
+									<li>
+										<?php echo CHtml::link('<i class="menu-icon fa fa-calendar-minus-o"> </i> <span class="menu-text" >' . Yii::t('Common', 'Past Events') . '</span>', array('/event/index', 'st'=>'3')); ?>
 									</li>
+									 
 								</ul>
-							</li>
-							 
+							</li>	
 							<li class="dropdown">
 								<a class="dropdown-toggle" href="#">
-									Celebraties or Artist <i class="fa fa-angle-down"></i>
+									New &amp; Feeds<i class="fa fa-angle-down"></i>
 								</a>
 								<ul class="dropdown-menu">
 									<li>																	
-										<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Bangladeshi') . '</span>', array('/celebraties/bangla')); ?>
+										<?php echo CHtml::link('<i class="menu-icon fa fa-newspaper-o"> </i> <span class="menu-text" >' . Yii::t('Common', 'News') . '</span>', array('/site/news')); ?>
 									</li>
 									<li class="divider"></li>
 									<li>																	
-										<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Indian') . '</span>', array('/celebraties/india')); ?>
+										<?php echo CHtml::link('<i class="menu-icon fa fa-users"> </i> <span class="menu-text" >' . Yii::t('Common', 'Our Clients') . '</span>', array('/site/clients')); ?>
 									</li>
 									<li class="divider"></li>
 									<li>																	
-										<?php echo CHtml::link('<i class="menu-icon fa fa-tachometer"> </i> <span class="menu-text" >' . Yii::t('Common', 'Australian') . '</span>', array('/celebraties/aus')); ?>
+										<?php echo CHtml::link('<i class="menu-icon fa fa-photo"> </i> <span class="menu-text" >' . Yii::t('Common', 'Photo Gallery') . '</span>', array('/gallery/index')); ?>
+									</li>		
+									<li class="divider"></li>									
+									<li>																	
+										<?php echo CHtml::link('<i class="menu-icon fa fa-film"> </i> <span class="menu-text" >' . Yii::t('Common', 'Video') . '</span>', array('/gallery/video')); ?>
 									</li>
+								</ul>
+							</li>							
+							<li class="dropdown">
+								<a class="dropdown-toggle" href="#">
+									Our Policy<i class="fa fa-angle-down"></i>
+								</a>
+								<ul class="dropdown-menu">
+									<li>																	
+										<?php echo CHtml::link('<i class="menu-icon fa fa-file-text"> </i> <span class="menu-text" >' . Yii::t('Common', 'Terms and Condition') . '</span>', array('/site/terms')); ?>
+									</li>
+									<li class="divider"></li>
+									<li>																	
+										<?php echo CHtml::link('<i class="menu-icon fa fa-lock"> </i> <span class="menu-text" >' . Yii::t('Common', 'Privacy Policy') . '</span>', array('/site/privacy')); ?>
+									</li>
+									<li class="divider"></li>
+									<li>																	
+										<?php echo CHtml::link('<i class="menu-icon fa fa-repeat"> </i> <span class="menu-text" >' . Yii::t('Common', 'Refund Policy') . '</span>', array('/site/refund')); ?>
+									</li>		
+									 
 								</ul>
 							</li>
 							<li class="">
-								<a class="dropdown-toggle" href="#">
-									Organizers 
-								</a>
+								<?php echo CHtml::link('<i class="menu-icon fa fa-address-book"> </i> <span class="menu-text" >' . Yii::t('Common', 'Contact Us') . '</span>', array('/site/contact'), array('class'=>'dropdown-toggle')); ?>
 							</li>
 							<li class="">
-								<a class="dropdown-toggle" href="#">
-									Video 
-								</a>
+								<?php echo CHtml::link('<i class="menu-icon fa fa-chain"> </i> <span class="menu-text" >' . Yii::t('Common', 'Sale Tickets with Us') . '</span>', array('/site/saleWithUs'), array('class'=>'dropdown-toggle')); ?>
 							</li>
-							<li class="">
-								<a class="dropdown-toggle" href="#">
-									Music 
-								</a>
-							</li>
-							<li class="">
-								<a class="dropdown-toggle" href="#">
-									Gallery 
-								</a>
-							</li>
-							<li class="">
-								<?php echo CHtml::link('<span class="menu-text" >' . Yii::t('Common', 'Contact') . '</span>', array('site/contact')); ?>
-
-							</li>
+							
 							 
 							<!-- GLOBAL SEARCH -->
 							<li class="search">
@@ -368,10 +335,51 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		<div id="wrapper">
 		
 			<?php echo $content; ?>
+			
+			
+			
+			<!-- CALLOUT -->
+			<section class="container">
 
+				<div class="row bs-callout nomargin-bottom" style="margin: 30px 0 !important; padding: 10px 0 !important">
+					<div class="col-md-8 text-center">
+						<h3 class="padding20">Subscribe <strong>now</strong> and get the <strong>latest</strong> offers.</h3>
+					</div>
+					<div class="col-md-4">
+
+						<p class="nomargin">Type your best E-mail Address</p>
+
+						<form method="get" action="#" class="input-group">
+							<input type="text" class="form-control" name="s" id="s" value="" placeholder="E-mail Address" />
+							<span class="input-group-btn">
+								<button class="btn btn-primary"><i class="fa fa-search"></i></button>
+							</span>
+						</form>
+
+					</div>
+				</div>
+
+			</section>
+			<!-- /CALLOUT -->			
+			<!-- CALLOUT -->
+			<section class="container">
+
+				<div class="row" style="margin: 20px 0 0 0 !important; padding: 10px 0 !important">
+					<div class="col-md-6">
+						<h4>We accept payment through</h4>
+						<img class="img-responsive"  style="height: 120px;"  src="<?php echo Yii::app()->request->baseUrl;?>/themes/default/assets/images/payment_media.png" alt="">
+					</div>
+					<div class="col-md-6" style="">
+						<h4>Encrytion Security &amp; Management</h4>
+						<img class="img-responsive " style="height: 120px; margin-top: -5px;" src="<?php echo Yii::app()->request->baseUrl;?>/themes/default/assets/images/ssl.png"  alt="">
+					</div>
+				</div>
+
+			</section>
+			<!-- /CALLOUT -->
 		</div>
 		<!-- /WRAPPER -->
-
+		
 		<!-- FOOTER -->
 		<footer>
 			<!-- copyright , scrollTo Top -->
@@ -382,80 +390,110 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				</div>
 			</div>
 			<!-- copyright , scrollTo Top -->
-			<?php 
-			/*
+			 
 			<!-- footer content -->
 			<div class="footer-content">
 				<div class="container">
-
 					<div class="row">
-
-
-						<!-- FOOTER CONTACT INFO -->
-						<div class="column col-md-4">
-							<h3>CONTACT</h3>
-
-							<p class="contact-desc">
-								Atropos is a very powerful HTML5 template, you will be able to create an awesome website in a very simple way.										
-							</p>
-							<address class="font-opensans">
-								<ul>
-									<li class="footer-sprite address">
-										215/2/3<br />
-										Shantibag, Malibag<br />
-										Dhaka-1214<br />
-									</li>
-									<li class="footer-sprite phone">
-										Phone: +880-1711-239679
-									</li>
-									<li class="footer-sprite email">
-										<a href="mailto:info@tixmart.com"  onmousedown='return false;' onselectstart='return false;'>info@eventek.com.au</a>
-									</li>
-								</ul>
-							</address>
-
-						</div>
-						<!-- /FOOTER CONTACT INFO -->
-
-
-						<!-- FOOTER LOGO -->
-						<div class="column logo col-md-4 text-center">
-							<div class="logo-content">
-								<img class="animate_fade_in" src="assets/images/icon_large.png" width="200" alt="" />
-								<h1 style="color:#fff;font-weight:bold;font-family:'arial'">Eventek</h1>
-							</div>											
-						</div>
-						<!-- /FOOTER LOGO -->
-
-
 						<!-- FOOTER LATEST POSTS -->
-						<div class="column col-md-4 text-right">
-							<h3>RECENT POSTS</h3>
+						<div class="column col-md-3 text-right">
+							<h3 class="uppercase">Events &amp; Tickets</h3>
 
 							<div class="post-item">
-								<small>JANUARY 2, 2014 BY ADMIN</small>
-								<h3><a href="blog-single-sidebar-left.html">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h3>
+								<h3><?php echo CHtml::link(Yii::t('Common', 'About Us'), array('site/about', ), array('class' => 'btn-labeled')); ?></h3>
 							</div>
 							<div class="post-item">
-								<small>JANUARY 2, 2014 BY ADMIN</small>
-								<h3><a href="blog-single-sidebar-left.html">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h3>
+								<h3><?php echo CHtml::link(Yii::t('Common', 'On Sale Events'), array('event/onsale', ), array('class' => 'btn-labeled')); ?></h3>
 							</div>
 							<div class="post-item">
-								<small>JANUARY 2, 2014 BY ADMIN</small>
-								<h3><a href="blog-single-sidebar-left.html">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a></h3>
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Up Coming Events'), array('event/upcoming', ), array('class' => 'btn-labeled')); ?></h3>
 							</div>
 
-							<a href="blog-masonry-sidebar.html" class="view-more pull-right">View Blog <i class="fa fa-arrow-right"></i></a>
-
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Past Events'), array('event/past', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+ 
+							<div class="post-item">
+								 <h3><a href="https://eventek.com.au/site/admin.php?r=site/login" title="Client Login" target="_blank" class="btn-labeled">Client Login</a></h3>
+							</div>
+ 
 						</div>
 						<!-- /FOOTER LATEST POSTS -->
 
+						<!-- FOOTER LATEST POSTS -->
+						<div class="column col-md-3 text-right">
+							<h3 class="uppercase">Policies</h3>
+
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Term &amp; Condition'), array('site/term', ), array('class' => 'btn-labeled ')); ?></h3>
+							</div>
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Privacy Policy'), array('site/privacy', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Refund Policy'), array('site/refund', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+ 
+						</div>
+						<!-- /FOOTER LATEST News & Text -->
+
+						<!-- FOOTER Manu -->
+						<div class="column col-md-3 text-right">
+							<h3 class="uppercase">News &amp; Gallery</h3>
+
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'News &amp; Information'), array('site/news', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Our Clients'), array('site/clients', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Photo Gallery'), array('site/photoGal', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Video Gallery'), array('site/videoGal', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+						</div>
+						<!-- /FOOTER LATEST POSTS -->
+
+						<!-- FOOTER CONTACT INFO -->
+						<div class="column col-md-3  text-right">
+							<h3 class="uppercase">CONTACT</h3>
+							<div class="post-item">
+								<h3><?php echo CHtml::link(Yii::t('Common', 'Contact Us'), array('site/contact', ), array('class' => 'btn-labeled')); ?></h3>
+							</div>
+
+							<div class="post-item">
+								<h3><i class="fa fa-phone-square"></i> +61-413 348 823</h3>
+							</div>
+							<div class="post-item">
+								<h3><i class="fa fa-envelope-o"></i> <a href="mailto:info@tixmart.com"  onmousedown='return false;' onselectstart='return false;'> info@eventek.com.au</a></h3>
+							</div>							
+							<div class="post-item">
+									<!-- SOCIALS -->
+									<h3 class="">
+										<i class="fa fa-twitter"></i> 
+										<strong class="styleColor">Follow</strong> Us
+									</h3>
+
+									<a href="#" class="social fa fa-facebook"></a>
+									<a href="#" class="social fa fa-twitter"></a>
+									<a href="#" class="social fa fa-google-plus"></a>
+									<a href="#" class="social fa fa-linkedin"></a>
+									<a href="#" class="social fa fa-pinterest"></a>
+									<a href="#" class="social fa fa-flickr"></a>
+							</div>
+ 
+
+						</div>
+						<!-- /FOOTER CONTACT INFO -->
 					</div>
 
 				</div>
 			</div>
 			<!-- footer content -->
-			*/ ?>
+			 
 		</footer>		
 		<!-- /FOOTER -->
 
@@ -503,4 +541,4 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 	</body>
 
-</html>
+<

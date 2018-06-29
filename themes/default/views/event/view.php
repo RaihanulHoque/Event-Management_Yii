@@ -5,7 +5,6 @@
 /* @var $model Event */
 
 //print $model->title; exit();
-
 $this->breadcrumbs=array(
 	'Events'=>array('index'),
 	$model->title,
@@ -64,66 +63,66 @@ $this->breadcrumbs=array(
 												<!-- modal body -->
 												<div class="modal-body">
  											
-<div class="row">
-		<?php $formSub=$this->beginWidget('CActiveForm', array(
-			'id'=>'event-subscribe-form',
-			'action'=>Yii::app()->createUrl('event/subscribe'),
-			'enableAjaxValidation'=>false,
-		)); ?>
+	<div class="row">
+			<?php $formSub=$this->beginWidget('CActiveForm', array(
+				'id'=>'event-subscribe-form',
+				'action'=>Yii::app()->createUrl('event/subscribe'),
+				'enableAjaxValidation'=>false,
+			)); ?>
 
-		<p class="note">Fields with <span class="required">*</span> are required.</p>
+			<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-		<?php echo $formSub->errorSummary($modelSub); ?>
+			<?php echo $formSub->errorSummary($modelSub); ?>
 
-		<div class="row" style="display:none;">
-			<?php echo $formSub->textField($modelSub,'event_id', array('value'=>$model->id)); ?>; ?>
-		</div>
-		<div class="col-md-12">
-			<div class="form-group">
-				<?php echo $formSub->textField($modelSub,'name',array('placeholder'=>'Full Name','size'=>60,'maxlength'=>200, 'class'=>'form-control')); ?> *
+			<div class="row" style="display:none;">
+				<?php echo $formSub->textField($modelSub,'event_id', array('value'=>$model->id)); ?>; ?>
 			</div>
-		</div>
-		<div class="col-md-12">
-			<div class="form-group">
-				<?php echo $formSub->textField($modelSub,'email',array('placeholder'=>'Email', 'class'=>'form-control')); ?> *
+			<div class="col-md-12">
+				<div class="form-group">
+					<?php echo $formSub->textField($modelSub,'name',array('placeholder'=>'Full Name','size'=>60,'maxlength'=>200, 'class'=>'form-control')); ?> *
+				</div>
 			</div>
-		</div>
-		<div class="col-md-12">
-			<div class="form-group">
-				<?php echo $formSub->textField($modelSub,'phone',array('placeholder'=>'Phone Number', 'class'=>'form-control')); ?>
+			<div class="col-md-12">
+				<div class="form-group">
+					<?php echo $formSub->textField($modelSub,'email',array('placeholder'=>'Email', 'class'=>'form-control')); ?> *
+				</div>
 			</div>
-		</div>
- 		<div class="col-md-12">
-			<div class="form-group">
-				<label class="block"><?php //echo $formSub->checkBox($model,'agree', array('value'=>1, 'uncheckValue'=>0, 'class'=>'form-control')); ?>I accecpt Terms &amp; Conditions.</label>
+			<div class="col-md-12">
+				<div class="form-group">
+					<?php echo $formSub->textField($modelSub,'phone',array('placeholder'=>'Phone Number', 'class'=>'form-control')); ?>
+				</div>
 			</div>
-		</div>
-	 
+	 		<div class="col-md-12">
+				<div class="form-group">
+					<label class="block"><?php //echo $formSub->checkBox($model,'agree', array('value'=>1, 'uncheckValue'=>0, 'class'=>'form-control')); ?>I accecpt Terms &amp; Conditions.</label>
+				</div>
+			</div>
 		 
+			 
 	</div>
 				
 
-			<div class="row">
-				<div class="col-md-12">
-					<div class="form-actions">
-					<?php echo CHtml::submitButton($modelSub->isNewRecord ? 'Subscribe' : 'Save', array('class' => 'btn btn-primary btn-mini iframe', 'style' => 'margin-left: 12px; margin-top: 20px; padding: 6px 35px;')); ?>
-				</div> 
-				</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-actions">
+				<?php echo CHtml::submitButton($modelSub->isNewRecord ? 'Subscribe' : 'Save', array('class' => 'btn btn-primary btn-mini iframe', 'style' => 'margin-left: 12px; margin-top: 20px; padding: 6px 35px;')); ?>
+			</div> 
 			</div>
+		</div>
 	<?php $this->endWidget(); ?>
 			</div>
 			<!-- /modal body -->
 
-										<div class="modal-footer"><!-- modal footer -->
-											<button class="btn btn-default" data-dismiss="modal">Close</button> 
-										</div><!-- /modal footer -->
+								<div class="modal-footer"><!-- modal footer -->
+									<button class="btn btn-default" data-dismiss="modal">Close</button> 
+								</div><!-- /modal footer -->
 
-									</div>
-								</div>
 							</div>
-							<?php /* echo '<img alt=""  width="100%" class="img-responsive" src="<?php echo Yii::app()->request->baseUrl;?>/uploads/event_photo/banner/'.$model->event_cover.'">' */ ?>
 						</div>
-						</div>
+					</div>
+					<?php /* echo '<img alt=""  width="100%" class="img-responsive" src="<?php echo Yii::app()->request->baseUrl;?>/uploads/event_photo/banner/'.$model->event_cover.'">' */ ?>
+				</div>
+			</div>
 
 						<div class="col-md-3 col-sm-2 ">
 							<h2 class="eventTitle"><?php echo $model->title; ?></h2>

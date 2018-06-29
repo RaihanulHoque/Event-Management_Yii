@@ -3,7 +3,7 @@
 /* @var $model GenText */
 
 $this->breadcrumbs=array(
-	'Gen Texts'=>array('index'),
+	'Gen Texts'=>array('admin'),
 	'Create',
 );
 
@@ -13,6 +13,5 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create GenText</h1>
-
+ 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

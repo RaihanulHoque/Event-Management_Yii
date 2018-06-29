@@ -188,7 +188,89 @@ class Event extends CActiveRecord
 				*/
 		    }
     }
-    
+	//Front End Ongoing Event List
+    public static function getUpcomingEvents() {
+        $eventRows = Yii::app()->db->createCommand()
+                ->select('*')
+                ->from('{{event}}')
+                ->where('status=' . (int) 2)
+                ->queryAll();
+
+			foreach ($eventRows as $event) {
+		        $id = $event['id'];
+		        $title = $event['title'];
+				$date = $event['date'];
+				$time = $event['time'];
+				$event_thumb = $event['event_thumb'];
+				$status = $event['status'];
+				
+				echo'<div class="col-sm-6 col-md-4">
+					<div class="item-box">
+						<figure>
+							'.CHtml::link('<span class="overlay color2"></span>
+							 <span class="inner">
+									<span class="block fa fa-plus fsize20"></span>
+									<strong>EVENT DETAIL</strong>
+								</span>', 
+							 array('/event/view', "id"=>$id), array("class"=>"item-hover")).'
+							 '.CHtml::link('<i class="fa fa-shopping-cart"></i>
+							 BUY TICKET', 
+							 array('/event/view', "id"=>$id), array("class"=>"btn btn-primary add_to_cart")).'
+							<img class="img-responsive" src="'.Yii::app()->request->baseUrl.'/uploads/event_photo/thumbs/T1.jpg" width="260" height="400" alt="">
+							<div class="styleSecondBackground thumbDate">'.$date.' @ '.$time.'</div>
+						</figure>
+						<div class="item-box-desc">
+							<h4>'.$title.'</h4>
+						</div>
+					</div>
+				</div>'; 
+				/*
+					<img class="img-responsive" src="<?php echo Yii::app()->request->baseUrl;?>/uploads/event_photo/thumbs/'.$event_thumb.'" width="260" height="400" alt="">
+				*/
+		    }
+    }
+	//Front End Ongoing Event List
+    public static function getPastEvents() {
+        $eventRows = Yii::app()->db->createCommand()
+                ->select('*')
+                ->from('{{event}}')
+                ->where('status=' . (int) 3)
+                ->queryAll();
+
+			foreach ($eventRows as $event) {
+		        $id = $event['id'];
+		        $title = $event['title'];
+				$date = $event['date'];
+				$time = $event['time'];
+				$event_thumb = $event['event_thumb'];
+				$status = $event['status'];
+				
+				echo'<div class="col-sm-6 col-md-4">
+					<div class="item-box">
+						<figure>
+							'.CHtml::link('<span class="overlay color2"></span>
+							 <span class="inner">
+									<span class="block fa fa-plus fsize20"></span>
+									<strong>EVENT DETAIL</strong>
+								</span>', 
+							 array('/event/view', "id"=>$id), array("class"=>"item-hover")).'
+							 '.CHtml::link('<i class="fa fa-shopping-cart"></i>
+							 BUY TICKET', 
+							 array('/event/view', "id"=>$id), array("class"=>"btn btn-primary add_to_cart")).'
+							<img class="img-responsive" src="'.Yii::app()->request->baseUrl.'/uploads/event_photo/thumbs/T1.jpg" width="260" height="400" alt="">
+							<div class="styleSecondBackground thumbDate">'.$date.' @ '.$time.'</div>
+						</figure>
+						<div class="item-box-desc">
+							<h4>'.$title.'</h4>
+						</div>
+					</div>
+				</div>'; 
+				/*
+					<img class="img-responsive" src="<?php echo Yii::app()->request->baseUrl;?>/uploads/event_photo/thumbs/'.$event_thumb.'" width="260" height="400" alt="">
+				*/
+		    }
+    }
+            
     public static function get_date($date) {
         if (empty($date) || $date == '0000-00-00' || $date == '0000-00-00 00:00:00') {
             return null;

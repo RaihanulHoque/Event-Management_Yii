@@ -95,4 +95,13 @@ class GenTextCategory extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	public static function getData($id, $field) {
+        $value = GenTextCategory::model()->findByAttributes(array('id' => $id));
+        if (empty($value->$field)) {
+            return null;
+        } else {
+            return $value->$field;
+        }
+    }
 }

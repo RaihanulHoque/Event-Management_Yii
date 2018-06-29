@@ -5,31 +5,34 @@
  *
  * The followings are the available columns in table '{{user}}':
  * @property integer $id
+ * @property integer $company_id
+ * @property string $username
+ * @property string $password
  * @property string $first_name
  * @property string $middle_name
  * @property string $last_name
- * @property integer $reference_id
- * @property string $username
  * @property string $email
  * @property string $phone
  * @property string $mobile
- * @property string $password
- * @property string $createtime
  * @property string $activation
+ * @property integer $createtime
+ * @property string $registerDate
+ * @property integer $lastvisit
+ * @property string $lastvisitDate
+ * @property integer $superuser
  * @property integer $groupid
- * @property string $address 
+ * @property integer $user_type
+ * @property integer $reference_id
+ * @property string $address
  * @property integer $country
  * @property integer $state
- * @property integer $city
- * @property string $phone
- * @property string $mobile
+ * @property string $city
+ * @property string $zip
  * @property string $profile_picture
  * @property string $image_rename
- * @property integer $company
- * @property integer $user_type
+ * @property string $language
  * @property integer $status
- * @property integer $superuser
- * @property integer $lastvisit
+ * @property integer $company
  */
 class User extends CActiveRecord {
 

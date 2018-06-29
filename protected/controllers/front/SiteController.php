@@ -12,7 +12,7 @@ class SiteController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'contact', 'login', 'logout', 'captcha', 'about', 'privacy', 'terms'),
+                'actions' => array('index', 'view', 'contact', 'login', 'logout', 'captcha', 'about', 'privacy', 'refund', 'terms', 'news','clients', 'error'),
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -142,24 +142,56 @@ class SiteController extends Controller {
 	 /**
      * General Text view are calling here.
      */
+	/**
+	* Manually Searching Based on "Text Category". Category Lists and their ID in the Left Side.
+	* 1	About Us
+	* 2	Privacy & policy
+	* 3	Terms & Condition
+	* 4	Sale Tickets with Use
+	* 5	Refund Policy
 	
-	public function actionAbout()
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+	*/
+	 
+	public function actionAbout(){
+		$about=1;
+		$this->render('about',array(
+			'model'=>$this->loadModelGenText($about),
 		));
 	}
-	public function actionPrivacy()
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+
+	public function actionPrivacy(){
+		$privacy=2;
+		$this->render('privacy',array(
+			'model'=>$this->loadModelGenText($privacy),
 		));
 	}
-	public function actionTerms()
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+		
+	public function actionTerms(){
+		$terms=3;
+		$this->render('terms',array(
+			'model'=>$this->loadModelGenText($terms),
 		));
 	}
+		
+	public function actionSaleWithUs(){
+		$saleWithUs=4;
+		$this->render('saleWithUs',array(
+			'model'=>$this->loadModelGenText($saleWithUs),
+		));
+	}
+		
+	public function actionRefund(){
+		$refund=5;
+		$this->render('refund',array(
+			'model'=>$this->loadModelGenText($refund),
+		));
+	}
+	
+    public function loadModelGenText($id) {
+        $model = GenText::model()->findByPk($id);
+        if ($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
+        return $model;
+    }
 
 }

@@ -3,7 +3,7 @@
 /* @var $model GenText */
 
 $this->breadcrumbs=array(
-	'Gen Texts'=>array('index'),
+	'Gen Texts'=>array('admin'),
 	$model->title=>array('view','id'=>$model->id),
 	'Update',
 );

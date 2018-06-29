@@ -28,11 +28,11 @@ class UserController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','create'),
+				'actions'=>array('index','view','create','activate'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update'),
+				'actions'=>array('update', 'changepassword'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -45,6 +45,21 @@ class UserController extends Controller
 		);
 	}
 
+
+    public function actionActivate($id, $activation) {
+        $value = User::model()->findByAttributes(array('id' => $id));
+        if (!empty($activation) OR !empty($id)) {
+            if ($activation == $value->activation) {
+                Yii::app()->db->createCommand('UPDATE {{user}} SET `status` = 1 WHERE id=' . $id)->execute();
+                Yii::app()->user->setFlash('success', 'Account verification successful. Please login.');
+                $this->redirect(array('site/login'));
+            } else {
+                Yii::app()->user->setFlash('error', 'Account verification not successful. Please try again!');
+                $this->redirect(array('site/login'));
+            }
+        }
+    }
+
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -55,94 +70,191 @@ class UserController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+    /**
+     * Change Password a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionChangepassword($id)
+     {      
+        $model = new User;
+     
+        $model = User::model()->findByAttributes(array('id'=>$id));
+        $model->setScenario('changePwd');
+     
+     
+         if(isset($_POST['User'])){
+     
+            $model->attributes = $_POST['User'];
+            $valid = $model->validate();
+     
+            if($valid){
+     
+              $model->password = SHA1($model->password);
+     
+              if($model->save())
+                 $this->redirect(array('changepassword','msg'=>'successfully changed password'));
+              else
+                 $this->redirect(array('changepassword','msg'=>'password not changed'));
+                }
+            }
+     
+        $this->render('changepassword',array('model'=>$model)); 
+     }
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate() {
+        //$this->layout = '//layouts/register_client_admin';
+        //$this->page_title = 'Registration';
+        $model = new User;
+      
+		$upload=$model->profile_picture=CUploadedFile::getInstance($model,'profile_picture');
+		$imageName=time().'.jpg';
+		
+		
+		$target = dirname(__FILE__) .'/uploads/profile_picture';
+		if (!is_dir($target)) {
+			mkdir($target, 0777, true);
+		}
+		
+		
+        if (isset($_POST['User'])) {
+            $model->attributes = $_POST['User'];
+            if ($model->validate()) {
+                $model->password = SHA1($model->password);
+                $model->registerDate = new CDbExpression('NOW()');
+                $model->activation = md5(microtime());  
+			
+				$model_company = new Company;
+               
+                $model->user_type = 4; //2 (4 is Customer Type)
+                $model->groupid = 4; //2 (4 is Customer Type)
+                //$model->status = 1; //2 (1 means active user) Activation Action from Email link
+                               
+				//print $model->profile_picture; exit();
+				
+                if ($model->save()) {
+					
+					//Picture upload script
+					if (!empty($model->profile_picture)) {
+						
+						$model->image_rename=$imageName;
+						
+                        $model->profile_picture->saveAs($target.'/'.$imageName);
+                        $file=$target.'/'.$imageName;
+                        $img = Yii::app()->simpleImage->load($file);
+                        $img->resizeToHeight(800);
+                        $img->save($target."/h800px/".$imageName);
+						$img->square(300);
+                        $img->save($target."/sq300px/".$imageName);
+                    }
+					
+					
+                    if ($model->groupid == 2) {
+                        $model_company->owner = $model->id;
+                        $model_company->company_name = 'Eventek_Client- '.$model->first_name.' '.$model->last_name;
+                        //$model_company->currency = ;
+                        $model_company->email = $model->email;
+                        $model_company->save();
+                    }
+					 
+                    //Send mail to user
+                    $message = "Hello " . $model->first_name . ", <br /><br />";
+                    $message .= "Welcome to Eventek. Please click on the link below to activate your account.  Alternatively, you can copy and paste the complete URL on the address bar of your browser and then press the Enter key.  <br /><br />";
+                    $message .= 'http://' . $_SERVER['HTTP_HOST'] . $this->createUrl('user/activate', array("id" => $model->id, "activation" => $model->activation));
+                    $message .= "<br /><br />Sincerely, <br />" . Yii::app()->params['adminName'];
+                    $to = $model->email;
+                    $subject = 'Welcome to ' . Yii::app()->params['adminName'];
+                    $fromName = Yii::app()->params['adminName'];
+                    $fromMail = Yii::app()->params['adminEmail'];
+                    User::sendMail($to, $subject, $message, $fromName, $fromMail);
+					 
+                    Yii::app()->user->setFlash('success', 'Thanks for registering with us! Please check your email to activate account.');					
+                    $this->redirect(array('site/login'));
+                    //$this->redirect(array('view', 'id' => $model->id));
+                }
+            }
+        }
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model=new User;
+        $this->render('create', array(
+            'model' => $model,
+        ));
+    }
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id) {
+        //$this->page_title = 'Edit Profile';
+        $model = $this->loadModel($id);
+        $previuosFileName = $model->profile_picture;
+        $previuosPassword = $model->password;
+         //$model->password = SHA1($model->password);
+        $path = Yii::app()->basePath . '/../uploads/profile_picture';
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
 
-		if(isset($_POST['User'])){
-			$model->attributes=$_POST['User'];
-			if ($model->validate()) {
-                //get data 
-                $model->activation = Client::encrypting(microtime() . $model->password);
-                $model->createtime = time();
-                $model->superuser = 0;
-                $model->groupid= 3; //General Rigister Users/Member
-                $model->user_type= 3; //General Rigister Users/Member
-                $model->password = User::encrypting($model->password);
-                $model->verifyPassword = User::encrypting($model->verifyPassword);
-
-                //$model->company_id = Yii::app()->user->companyid;
-                /*
-                if (@!empty($_FILES['Client']['name']['profile_picture'])) {
-                    $model->profile_picture = $_POST['Client']['profile_picture'];
+        if (isset($_POST['User'])) {
+            $model->attributes = $_POST['User'];
+            if ($model->validate()) {
+              
+              //Passward 
+               if (@!empty($model->password)) {
+                    $model->password = SHA1($model->password);
+               } else {
+                    $model->password=$previuosPassword;
+                }
+                //Picture upload script
+                if (@!empty($_FILES['User']['first_name']['profile_picture'])) {
+                    $model->profile_picture = $_POST['User']['profile_picture'];
 
                     if ($model->validate(array('profile_picture'))) {
+                        $filePath = Yii::app()->basePath . '/../uploads/profile_picture/' . $previuosFileName;
+                        if ((is_file($filePath)) && (file_exists($filePath))) {
+                            unlink($filePath);
+                        }
                         $model->profile_picture = CUploadedFile::getInstance($model, 'profile_picture');
                     } else {
                         $model->profile_picture = '';
                     }
                     $model->profile_picture->saveAs($path . '/' . time() . '_' . str_replace(' ', '_', strtolower($model->profile_picture)));
                     $model->profile_picture = time() . '_' . str_replace(' ', '_', strtolower($model->profile_picture));
+                } else {
+                    $model->profile_picture = $previuosFileName;
                 }
-                */ 
                 if ($model->save()) {
-                    Yii::app()->user->setFlash('success', "User created successfully.");
                     $this->redirect(array('view', 'id' => $model->id));
                 }
             }
-		}
+        }
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
+        $this->render('update', array(
+            'model' => $model,
+        ));
+    }
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete($id) {
+        if (Yii::app()->request->isPostRequest) {
+            // we only allow deletion via POST request
+            $this->loadModel($id)->delete();
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['User']))
-		{
-			$model->attributes=$_POST['User'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-	}
-
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            }
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+    }
 	/**
 	 * Lists all models.
 	 */
